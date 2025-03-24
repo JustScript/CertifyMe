@@ -1,0 +1,56 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch React App",
+            "type": "node",
+            "request": "launch",
+            "program": "${workspaceFolder}/CertifyMeWWW/node_modules/vite/bin/vite.js",
+            "args": [
+                "--debug"
+            ],
+            "cwd": "${workspaceFolder}/CertifyMeWWW",
+            "env": {},
+        },
+        {
+            "name": "Launch .NET App",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/CertifyMe/bin/Debug/net8.0/CertifyMe.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/CertifyMe",
+            "stopAtEntry": false,
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+        },
+        {
+            "name": "Launch React App (web)",
+            "request": "launch",
+            "type": "msedge",
+            "url": "http://localhost:5173",
+            "webRoot": "${workspaceFolder}/CertifyMeWWW",
+            "userDataDir": "${workspaceFolder}/.edge/CertifyMeWWW"
+        },
+        {
+            "name": "Launch .NET App (web)",
+            "request": "launch",
+            "type": "msedge",
+            "url": "https://localhost:7216",
+            "webRoot": "${workspaceFolder}/CertifyMe",
+            "userDataDir": "${workspaceFolder}/.edge/CertifyMe"
+        },
+    ],
+    "compounds": [
+        {
+            "name": "Launch All",
+            "configurations": [
+                "Launch .NET App",
+                "Launch .NET App (web)",
+                "Launch React App",
+                "Launch React App (web)",
+            ]
+        }
+    ]
+}

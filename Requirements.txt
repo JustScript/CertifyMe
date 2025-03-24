@@ -1,0 +1,33 @@
+Zadaniem jest stworzenie prostej aplikacji webowej w technologii .NET (C#), która umożliwi:
+
+Załadowanie pliku Excel:
+- Po uruchomieniu aplikacji użytkownik powinien mieć możliwość wgrania pliku Excel w ustalonym formacie.
+- Plik zawiera listę uczestników kursu i dla każdej osoby przechowuje informacje:
+- Imię
+- Nazwisko
+- Adres e-mail
+- Nazwa kursu
+- Data ukończenia
+
+Generowanie certyfikatów w formacie PDF:
+- Na podstawie danych z pliku Excel, dla każdego uczestnika należy wygenerować certyfikat ukończenia kursu w formacie PDF.
+
+Certyfikat powinien zawierać co najmniej:
+- Imię i nazwisko uczestnika
+- Nazwę ukończonego kursu
+- Nie są wymagane zaawansowane elementy graficzne, ale projekt powinien mieć podstawowy układ i czytelny format 
+- (mile widziane uwzględnienie szablonów certyfikatów)
+
+Wysyłanie wiadomości e-mail z załącznikiem:
+- Po wygenerowaniu certyfikatu dla danego uczestnika, aplikacja powinna wysłać do niego wiadomość e-mail.
+- Wiadomość powinna mieć w załączniku wygenerowany plik PDF z certyfikatem.
+- Każdy uczestnik powinien otrzymać osobną wiadomość.
+ 
+Wytyczne i dodatkowe uwagi:
+- Aplikacja musi być uruchamiana w przeglądarce jako serwis webowy (np. ASP.NET Core).
+- Testy jednostkowe oraz czytelna architektura aplikacji będą dodatkowym atutem.
+
+Mile widziane:
+- Logika pozwalająca na konfigurację/wybór szablonu certyfikatu.
+- Rozszerzenia w zakresie walidacji danych (np. co, jeśli w pliku Excel są błędne dane?).
+- Obsługa wyjątków i przejrzyste komunikaty dla użytkownika.
