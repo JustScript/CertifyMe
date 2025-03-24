@@ -12,7 +12,7 @@ namespace CertifyMe.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "ExcelRows",
+                name: "CourseCompletionRecords",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -25,7 +25,7 @@ namespace CertifyMe.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ExcelRows", x => x.Id);
+                    table.PrimaryKey("PK_CourseCompletionRecords", x => x.Id);
                 });
         }
 
@@ -33,7 +33,7 @@ namespace CertifyMe.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ExcelRows");
+                name: "CourseCompletionRecords");
         }
     }
 }

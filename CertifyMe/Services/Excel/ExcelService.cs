@@ -1,6 +1,4 @@
-using System.Globalization;
-using CertifyMe.Models.Configuration;
-using CertifyMe.Models.Entities;
+using CertifyMe.Models;
 using OfficeOpenXml;
 
 namespace CertifyMe.Services
@@ -11,7 +9,7 @@ namespace CertifyMe.Services
 
         public ExcelService(IConfiguration configuration)
         {
-            _excelColumns = configuration.GetSection("ImportExcelFileColumnNumberSettings").Get<ImportExcelFileSettings>();
+            _excelColumns = configuration.GetSection("ImportExcelFileSettings").Get<ImportExcelFileSettings>();
 
             // EPPlus NonCommercial license is free to use in non-commercial applications            
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
@@ -32,15 +30,17 @@ namespace CertifyMe.Services
 
                     for (int row = _excelColumns.StartRowNum; row <= endRowNum; row++) // Skip headers
                     {
-                        DateTime.TryParse(worksheet.Cells[row, _excelColumns.CompletedColNum].Text, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime completionDate);
-                        records.Add(new ExcelRowRecord
+                        var name = worksheet.Cells[row, _excelColumns.NameColNum].Text;
+                        var surname = worksheet.Cells[row, _excelColumns.SurnameColNum].Text;
+                        var email = worksheet.Cells[row, _excelColumns.EmailColNum].Text;
+                        var course = worksheet.Cells[row, _excelColumns.CourseColNum].Text;
+                        var completed = worksheet.Cells[row, _excelColumns.CompletedColNum].Text;
+
+                        var record = new ExcelRowRecord(name, surname, email, course, completed);
+                        if (record.IsValid)
                         {
-                            Name = worksheet.Cells[row, _excelColumns.NameColNum].Text,
-                            Surname = worksheet.Cells[row, _excelColumns.SurnameColNum].Text,
-                            Email = worksheet.Cells[row, _excelColumns.EmailColNum].Text,
-                            CourseName = worksheet.Cells[row, _excelColumns.CourseColNum].Text,
-                            CompletionDate = completionDate
-                        });
+                            records.Add(record);
+                        }
                     }
                 }
             }

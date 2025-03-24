@@ -1,7 +1,6 @@
-using CertifyMe.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace CertifyMe.Models.Database
+namespace CertifyMe.Models
 {
     public class AppDbContext : DbContext
     {

@@ -1,8 +1,8 @@
-using CertifyMe.Models.Database;
-using CertifyMe.Models.Entities;
+using CertifyMe.Extensions;
+using CertifyMe.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace CertifyMe.Models.Repositories
+namespace CertifyMe.Repositories
 {
     public class UserRepository : IUserRepository
     {
@@ -29,22 +29,29 @@ namespace CertifyMe.Models.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task CreateOrUpdateByEmailAsync(List<ExcelRowRecord> excelRows)
+        public async Task UpsertFromExcelAsync(List<ExcelRowRecord> excelRows)
         {
-            foreach (ExcelRowRecord row in excelRows)
+            foreach (ExcelRowRecord excelRow in excelRows)
             {
-                var existingUser = await _context.CourseCompletionRecords.FirstOrDefaultAsync(u => u.Email == row.Email);
-                if (existingUser == null)
+                // Identify record by name, surname, email and course name
+                CourseCompletionRecord? existingRecord = await _context.CourseCompletionRecords.FirstOrDefaultAsync(x => 
+                    x.Name == excelRow.Name &&
+                    x.Surname == excelRow.Surname &&
+                    x.Email == excelRow.Email &&
+                    x.CourseName == excelRow.CourseName
+                );
+
+                if (existingRecord == null)
                 {
-                    await CreateAsync(CourseCompletionRecord.FromDto(row));
+                    var newRecord = new CourseCompletionRecord().SyncWithExcelRow(excelRow);
+                    await CreateAsync(newRecord);
                 }
                 else
                 {
-                    await UpdateAsync(CourseCompletionRecord.FromDto(row));
+                    existingRecord = existingRecord.SyncWithExcelRow(excelRow);
+                    await UpdateAsync(existingRecord);
                 }
             }
-
-            await _context.SaveChangesAsync();
         }
 
         public async Task UpdateAsync(CourseCompletionRecord excelRow)

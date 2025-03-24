@@ -1,4 +1,4 @@
-using CertifyMe.Models.Entities;
+using CertifyMe.Models;
 
 namespace CertifyMe.Services
 {

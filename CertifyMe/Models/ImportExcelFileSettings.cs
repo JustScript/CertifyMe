@@ -1,4 +1,4 @@
-namespace CertifyMe.Models.Configuration
+namespace CertifyMe.Models
 {
     public struct ImportExcelFileSettings
     {

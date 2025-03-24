@@ -1,6 +1,6 @@
 using CertifyMe.Middlewares;
-using CertifyMe.Models.Database;
-using CertifyMe.Models.Repositories;
+using CertifyMe.Models;
+using CertifyMe.Repositories;
 using CertifyMe.Services;
 using Microsoft.EntityFrameworkCore;
 

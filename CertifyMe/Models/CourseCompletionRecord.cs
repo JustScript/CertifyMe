@@ -1,11 +1,17 @@
-namespace CertifyMe.Models.Entities
+namespace CertifyMe.Models
 {
-    public class ExcelRowRecord
+    public class CourseCompletionRecord
     {
+        public int Id { get; set; }
+
         public string Name { get; set; }
+
         public string Surname { get; set; }
+
         public string Email { get; set; }
+
         public string CourseName { get; set; }
+
         public DateTime CompletionDate { get; set; }
     }
 }

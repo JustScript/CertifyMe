@@ -1,5 +1,5 @@
-using CertifyMe.Models.Entities;
-using CertifyMe.Models.Repositories;
+using CertifyMe.Models;
+using CertifyMe.Repositories;
 using CertifyMe.Services;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -37,9 +37,10 @@ public class UploadController : ControllerBase
         List<ExcelRowRecord> records = await _excelService.GetRecordsFromExcelFileAsync(file);
         if (records.Any())
         {
-            await _userRepository.CreateOrUpdateByEmailAsync(records);
+            await _userRepository.UpsertFromExcelAsync(records);
+            return Ok(new { message = $"File uploaded successfully" });
         }
 
-        return Ok(new { message = $"File uploaded successfully. {records.Count()} rows processed." });
+        return BadRequest("No records found.");
     }
 }
