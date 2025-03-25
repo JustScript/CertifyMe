@@ -20,5 +20,7 @@ namespace CertifyMe.Repositories
         Task UpdateAsync(CourseCompletionEntity excelRow);
 
         Task DeleteAsync(int id);
+
+        Task<object> GetPagedAsync(int page, int pageSize);
     }
 }

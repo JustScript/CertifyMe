@@ -32,7 +32,7 @@ namespace CertifyMe.Services
                 {
                     using var scope = _serviceProvider.CreateScope();
                     var courseCompletionRepository = scope.ServiceProvider.GetRequiredService<ICourseCompletionRepository>();
-                    
+
                     var unsentCertificates = await courseCompletionRepository.GetAllWithCertificateNotSentAsync();
                     if (!unsentCertificates.Any())
                     {
@@ -48,13 +48,16 @@ namespace CertifyMe.Services
                                 unsentCertificate.SendCertificateByEmail();
                                 unsentCertificate.Certificate.CertificateSendStatus = CertificateStatus.Sent;
                             }
-                            catch
+                            catch (Exception ex)
                             {
+                                _logger.LogInformation($"Background certificate email send worker failed. {ex.Message}");
+
                                 unsentCertificate.Certificate.CertificateSendStatus = CertificateStatus.Failed;
                             }
                             finally
                             {
                                 await courseCompletionRepository.UpdateAsync(unsentCertificate);
+                                await Task.Delay(1000);
                             }
                         }
                     }

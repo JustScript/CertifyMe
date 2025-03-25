@@ -2,6 +2,7 @@ using CertifyMe.Extensions;
 using CertifyMe.Models;
 using CertifyMe.Models.Database;
 using CertifyMe.Models.Entities;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
 namespace CertifyMe.Repositories
@@ -32,9 +33,9 @@ namespace CertifyMe.Repositories
 
         public async Task<List<CourseCompletionEntity>> GetAllWithCertificateNotSentAsync()
         {
-            return await _context.CourseCompletions.Where(c => c.Certificate != null && 
+            return await _context.CourseCompletions.Where(c => c.Certificate != null &&
             (
-                c.Certificate.CertificateSendStatus == CertificateStatus.NotSent || 
+                c.Certificate.CertificateSendStatus == CertificateStatus.NotSent ||
                 c.Certificate.CertificateSendStatus == CertificateStatus.Resend
             )).Include(c => c.Certificate).ToListAsync();
         }
@@ -84,6 +85,33 @@ namespace CertifyMe.Repositories
                 _context.CourseCompletions.Remove(user);
                 await _context.SaveChangesAsync();
             }
+        }
+
+        public async Task<object> GetPagedAsync(int page, int pageSize)
+        {
+            var total = await _context.CourseCompletions.CountAsync();
+
+            var data = await _context.CourseCompletions
+                .OrderBy(c => c.Id)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .Select(c => new
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    Surname = c.Surname,
+                    Email = c.Email,
+                    CourseName = c.CourseName,
+                    CompletionDate = c.CompletionDate.ToString("dd-MM-yyyy"),
+                    CertificateStatus = c.Certificate != null ? c.Certificate.CertificateSendStatus.ToString() : "NotGenerated"
+                })
+                .ToListAsync();
+
+            return new
+            {
+                Data = data,
+                Total = total
+            };
         }
     }
 }
