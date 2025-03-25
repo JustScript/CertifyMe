@@ -8,7 +8,7 @@ namespace CertifyMe.Models.Entities
 
         public byte[] FileData { get; set; } = Array.Empty<byte>();
         
-        public bool IsCertificateSent { get; set; }
+        public CertificateStatus CertificateSendStatus { get; set; }
 
         public int CourseCompletionEntityId { get; set; }
 

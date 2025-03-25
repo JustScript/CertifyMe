@@ -45,9 +45,14 @@ namespace CertifyMe.Extensions
                 return false;
             }
 
-            var smtpClient = new SmtpClient("sandbox.smtp.mailtrap.io", 2525)
+            var host = Environment.GetEnvironmentVariable("SMTP_HOST");
+            int.TryParse(Environment.GetEnvironmentVariable("SMTP_PORT"), out int port);
+            var user = Environment.GetEnvironmentVariable("SMTP_USER");
+            var password = Environment.GetEnvironmentVariable("SMTP_PWD");
+
+            var smtpClient = new SmtpClient(host, port)
             {
-                Credentials = new NetworkCredential("6604789d0e2e10", "196a38959c4b62"),
+                Credentials = new NetworkCredential(user, password),
                 EnableSsl = true
             };
 

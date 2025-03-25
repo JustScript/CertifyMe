@@ -1,5 +1,6 @@
 using System.Globalization;
 using System.Runtime.Serialization;
+using System.Text.RegularExpressions;
 
 namespace CertifyMe.Models
 {
@@ -36,7 +37,7 @@ namespace CertifyMe.Models
             return 
                 !string.IsNullOrEmpty(Name) &&
                 !string.IsNullOrEmpty(Surname) &&
-                !string.IsNullOrEmpty(Email) &&
+                !string.IsNullOrEmpty(Email) && Regex.Match(Email, @"^[^\s@]+@[^\s@]+\.[^\s@]+$").Success &&
                 !string.IsNullOrEmpty(CourseName) &&
                 CompletionDate != null;
         }

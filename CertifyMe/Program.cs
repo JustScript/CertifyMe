@@ -4,10 +4,13 @@ using CertifyMe.Repositories;
 using CertifyMe.Services;
 using Microsoft.EntityFrameworkCore;
 
+DotNetEnv.Env.Load(".env");
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectiion"))
+    //options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectiion"))
+    options.UseSqlServer(Environment.GetEnvironmentVariable("DB_CONN"))
 );
 
 builder.Services.AddSingleton<ITaskQueueService, TaskQueueService>();
