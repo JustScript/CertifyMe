@@ -39,7 +39,7 @@ namespace CertifyMe.Services
         {
             while (!stoppingToken.IsCancellationRequested)
             {
-                _logger.LogInformation("BackgroundCertificateGenWorker execute");
+                _logger.LogInformation("Background certificate generation worker started.");
 
                 try
                 {
@@ -63,7 +63,7 @@ namespace CertifyMe.Services
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, "BackgroundCertificateGenWorker task failed.");
+                    _logger.LogError(ex, "Background certificate generation worker failed.");
                 }
             }
         }
