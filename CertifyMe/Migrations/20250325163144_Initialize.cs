@@ -36,7 +36,7 @@ namespace CertifyMe.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FileName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FileData = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
-                    IsCertificateSent = table.Column<bool>(type: "bit", nullable: false),
+                    CertificateSendStatus = table.Column<int>(type: "int", nullable: false),
                     CourseCompletionEntityId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>

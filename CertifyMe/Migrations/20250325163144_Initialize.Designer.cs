@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CertifyMe.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250325110325_Initialize")]
+    [Migration("20250325163144_Initialize")]
     partial class Initialize
     {
         /// <inheritdoc />
@@ -33,6 +33,9 @@ namespace CertifyMe.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("CertificateSendStatus")
+                        .HasColumnType("int");
+
                     b.Property<int>("CourseCompletionEntityId")
                         .HasColumnType("int");
 
@@ -43,9 +46,6 @@ namespace CertifyMe.Migrations
                     b.Property<string>("FileName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsCertificateSent")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 

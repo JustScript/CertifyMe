@@ -1,6 +1,7 @@
 using System.Net;
 using System.Net.Mail;
 using CertifyMe.Extensions;
+using CertifyMe.Models;
 using CertifyMe.Models.Entities;
 using CertifyMe.Repositories;
 using HtmlRendererCore.PdfSharp;
@@ -42,9 +43,19 @@ namespace CertifyMe.Services
                     {
                         if (unsentCertificate.Certificate != null)
                         {
-                            unsentCertificate.SendCertificateByEmail();
-                            unsentCertificate.Certificate.IsCertificateSent = true;
-                            await courseCompletionRepository.UpdateAsync(unsentCertificate);
+                            try
+                            {
+                                unsentCertificate.SendCertificateByEmail();
+                                unsentCertificate.Certificate.CertificateSendStatus = CertificateStatus.Sent;
+                            }
+                            catch
+                            {
+                                unsentCertificate.Certificate.CertificateSendStatus = CertificateStatus.Failed;
+                            }
+                            finally
+                            {
+                                await courseCompletionRepository.UpdateAsync(unsentCertificate);
+                            }
                         }
                     }
                 }

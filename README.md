@@ -5,8 +5,15 @@
 ASP.NET Core web application that enables users to upload an Excel file containing participant data, generate personalized PDF course completion certificates (supports template configuration) and automatically email each certificate to the respective participant.
 ## Installation
 - Open root folder in VSCode
+- Create .env file in CertifyMe/CertifyMe/.env
+```
+SMTP_HOST = "<smtp host>"
+SMTP_PORT = <smtp port>
+SMTP_USER = "<user>"
+SMTP_PWD = "<password>"
+DB_CONN = "<db connection string>"
+```
 - Create a local SQL Server database with name CertifyMeDb
-- dotnet tool install --global dotnet-ef
 - dotnet ef migrations add Initialize
 - dotnet ef database update
 - run .NET and React projects using VSCode debug menu
@@ -27,6 +34,12 @@ ASP.NET Core web application that enables users to upload an Excel file containi
     "CourseColNum": 5,
     "CompletedColNum": 6
   }
+```
+
+- ImportExcelService.cs
+```
+// EPPlus NonCommercial license is free to use in non-commercial applications            
+ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 ```
 ## Tech Stack
 

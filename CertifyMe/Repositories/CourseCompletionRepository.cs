@@ -32,7 +32,11 @@ namespace CertifyMe.Repositories
 
         public async Task<List<CourseCompletionEntity>> GetAllWithCertificateNotSentAsync()
         {
-            return await _context.CourseCompletions.Where(c => c.Certificate != null && c.Certificate.IsCertificateSent == false).Include(c => c.Certificate).ToListAsync();
+            return await _context.CourseCompletions.Where(c => c.Certificate != null && 
+            (
+                c.Certificate.CertificateSendStatus == CertificateStatus.NotSent || 
+                c.Certificate.CertificateSendStatus == CertificateStatus.Resend
+            )).Include(c => c.Certificate).ToListAsync();
         }
 
         public async Task UpsertFromExcelAsync(List<ExcelRowRecord> excelRows)
