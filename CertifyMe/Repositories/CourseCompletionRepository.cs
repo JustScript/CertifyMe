@@ -30,10 +30,9 @@ namespace CertifyMe.Repositories
             return await _context.CourseCompletions.Where(c => c.Certificate == null).ToListAsync();
         }
 
-        public async Task CreateAsync(CourseCompletionEntity excelRow)
+        public async Task<List<CourseCompletionEntity>> GetAllWithCertificateNotSentAsync()
         {
-            _context.CourseCompletions.Add(excelRow);
-            await _context.SaveChangesAsync();
+            return await _context.CourseCompletions.Where(c => c.Certificate != null && c.Certificate.IsCertificateSent == false).Include(c => c.Certificate).ToListAsync();
         }
 
         public async Task UpsertFromExcelAsync(List<ExcelRowRecord> excelRows)
@@ -61,6 +60,12 @@ namespace CertifyMe.Repositories
             }
         }
 
+        public async Task CreateAsync(CourseCompletionEntity excelRow)
+        {
+            _context.CourseCompletions.Add(excelRow);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task UpdateAsync(CourseCompletionEntity excelRow)
         {
             _context.CourseCompletions.Update(excelRow);
@@ -75,11 +80,6 @@ namespace CertifyMe.Repositories
                 _context.CourseCompletions.Remove(user);
                 await _context.SaveChangesAsync();
             }
-        }
-
-        public async Task<List<CourseCompletionEntity>> GetAllWithCertificateNotSentAsync()
-        {
-            return await _context.CourseCompletions.Include(c => c.Certificate).Where(c => c.Certificate != null && c.Certificate.IsCertificateSent == false).ToListAsync();
         }
     }
 }

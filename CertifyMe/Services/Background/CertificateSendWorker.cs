@@ -25,14 +25,14 @@ namespace CertifyMe.Services
         {
             while (!stoppingToken.IsCancellationRequested)
             {
-                _logger.LogInformation("BackgroundCertificateGenWorker execute");
+                _logger.LogInformation("Background certificate email send worker started.");
 
                 try
                 {
                     using var scope = _serviceProvider.CreateScope();
                     var courseCompletionRepository = scope.ServiceProvider.GetRequiredService<ICourseCompletionRepository>();
+                    
                     var unsentCertificates = await courseCompletionRepository.GetAllWithCertificateNotSentAsync();
-
                     if (!unsentCertificates.Any())
                     {
                         await Task.Delay(60000); // wait 1 minute if nothing to do
@@ -50,7 +50,7 @@ namespace CertifyMe.Services
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, "BackgroundCertificateGenWorker task failed.");
+                    _logger.LogError(ex, "Background certificate email send worker failed.");
                 }
             }
         }

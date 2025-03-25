@@ -15,7 +15,7 @@ namespace CertifyMe.Middlewares
             {
                 await next(context).ConfigureAwait(false);
             }
-            catch(Exception ex)
+            catch(Exception)
             {
                 // Return 'Internal Server Error' for any unhandled application exception with the default text 'An error occurred while processing the request'
                 context.Response.StatusCode = 500;

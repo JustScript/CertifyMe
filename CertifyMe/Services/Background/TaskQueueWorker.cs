@@ -16,11 +16,11 @@ namespace CertifyMe.Services
         {
             while (!stoppingToken.IsCancellationRequested)
             {
-                _logger.LogInformation("BackgroundQueueWorker execute");
-                var workItem = await _taskQueue.DequeueAsync(stoppingToken);
+                _logger.LogInformation("Background task queue worker started.");
 
                 try
                 {
+                    var workItem = await _taskQueue.DequeueAsync(stoppingToken);
                     await workItem(stoppingToken);
                 }
                 catch (Exception ex)
