@@ -12,21 +12,24 @@ public class UploadController : ControllerBase
 {
     private readonly ILogger<UploadController> _logger;
 
-    private readonly IUserRepository _userRepository;
+    private readonly IImportExcelService _excelService;
 
-    private readonly IExcelService _excelService;
+    private readonly ITaskQueueService _backgroundTaskQueue;
 
-    public UploadController(ILogger<UploadController> logger, IUserRepository userRepository, IExcelService excelService)
+    private readonly IServiceScopeFactory _scopeFactory;
+
+    public UploadController(ILogger<UploadController> logger, IImportExcelService excelService, ITaskQueueService backgroundTaskQueue, IServiceScopeFactory scopeFactory)
     {
         _logger = logger;
-        _userRepository = userRepository;
         _excelService = excelService;
+        _backgroundTaskQueue = backgroundTaskQueue;
+        _scopeFactory = scopeFactory;
     }
 
     [HttpPost]
     [SwaggerOperation(
-        Summary = "Summary placeholder",
-        Description = "Description placeholder")]
+        Summary = "Upload excel file",
+        Description = "Upload excel file")]
     public async Task<IActionResult> Post(IFormFile file)
     {
         if (file == null || file.Length == 0)
@@ -37,7 +40,15 @@ public class UploadController : ControllerBase
         List<ExcelRowRecord> records = await _excelService.GetRecordsFromExcelFileAsync(file);
         if (records.Any())
         {
-            await _userRepository.UpsertFromExcelAsync(records);
+            // Fire-and-forget task
+            _backgroundTaskQueue.Enqueue(async token =>
+            {
+                using var scope = _scopeFactory.CreateScope();
+                var courseCompletionRepository = scope.ServiceProvider.GetRequiredService<ICourseCompletionRepository>();
+
+                await courseCompletionRepository.UpsertFromExcelAsync(records);
+            });
+
             return Ok(new { message = $"File uploaded successfully" });
         }
 

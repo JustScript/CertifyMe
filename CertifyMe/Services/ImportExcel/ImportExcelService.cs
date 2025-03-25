@@ -3,11 +3,11 @@ using OfficeOpenXml;
 
 namespace CertifyMe.Services
 {
-    public class ExcelService : IExcelService
+    public class ImportExcelService : IImportExcelService
     {
         private readonly ImportExcelFileSettings _excelColumns;
 
-        public ExcelService(IConfiguration configuration)
+        public ImportExcelService(IConfiguration configuration)
         {
             _excelColumns = configuration.GetSection("ImportExcelFileSettings").Get<ImportExcelFileSettings>();
 

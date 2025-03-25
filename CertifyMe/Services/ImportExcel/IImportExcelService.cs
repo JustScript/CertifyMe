@@ -2,7 +2,7 @@ using CertifyMe.Models;
 
 namespace CertifyMe.Services
 {
-    public interface IExcelService
+    public interface IImportExcelService
     {
         Task<List<ExcelRowRecord>> GetRecordsFromExcelFileAsync(IFormFile file);
     }
