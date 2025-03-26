@@ -9,20 +9,11 @@ namespace CertifyMe.Extensions
     {
         public static CourseCompletionEntity SyncWithExcelRow(this CourseCompletionEntity target, ExcelRowRecord excelRow)
         {
-            if (!string.IsNullOrEmpty(excelRow.Name))
-                target.Name = excelRow.Name;
-
-            if (!string.IsNullOrEmpty(excelRow.Surname))
-                target.Surname = excelRow.Surname;
-
-            if (!string.IsNullOrEmpty(excelRow.Email))
-                target.Email = excelRow.Email;
-
-            if (!string.IsNullOrEmpty(excelRow.CourseName))
-                target.CourseName = excelRow.CourseName;
-
-            if (excelRow.CompletionDate != null)
-                target.CompletionDate = (DateTime)excelRow.CompletionDate;
+            target.Name = excelRow.Name;
+            target.Surname = excelRow.Surname;
+            target.Email = excelRow.Email;
+            target.CourseName = excelRow.CourseName;
+            target.CompletionDate = excelRow.CompletionDate;
 
             return target;
         }

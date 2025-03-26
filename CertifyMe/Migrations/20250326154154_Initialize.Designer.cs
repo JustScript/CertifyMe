@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CertifyMe.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250325163144_Initialize")]
+    [Migration("20250326154154_Initialize")]
     partial class Initialize
     {
         /// <inheritdoc />

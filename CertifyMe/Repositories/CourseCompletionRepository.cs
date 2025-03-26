@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using CertifyMe.Extensions;
 using CertifyMe.Models;
 using CertifyMe.Models.Database;
@@ -28,7 +29,18 @@ namespace CertifyMe.Repositories
 
         public async Task<List<CourseCompletionEntity>> GetAllWithoutCertificateAsync()
         {
-            return await _context.CourseCompletions.Where(c => c.Certificate == null).ToListAsync();
+            var completions = await _context.CourseCompletions.Where(c =>
+                c.Name != null &&
+                c.Surname != null &&
+                c.CourseName != null &&
+                c.Certificate == null
+            ).ToListAsync();
+
+            var filtered = completions
+                .Where(c => Regex.IsMatch(c.Email, @"^[^\s@]+@[^\s@]+\.[^\s@]+$") )
+                .ToList();
+
+            return filtered;
         }
 
         public async Task<List<CourseCompletionEntity>> GetAllWithCertificateNotSentAsync()
@@ -54,7 +66,7 @@ namespace CertifyMe.Repositories
 
                 if (existingRecord == null)
                 {
-                    var newRecord = new CourseCompletionEntity().SyncWithExcelRow(excelRow);
+                    var newRecord = new CourseCompletionEntity(excelRow);
                     await CreateAsync(newRecord);
                 }
                 else

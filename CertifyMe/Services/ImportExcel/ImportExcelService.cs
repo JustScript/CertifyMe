@@ -37,10 +37,7 @@ namespace CertifyMe.Services
                         var completed = worksheet.Cells[row, _excelColumns.CompletedColNum].Text;
 
                         var record = new ExcelRowRecord(name, surname, email, course, completed);
-                        if (record.IsValid)
-                        {
-                            records.Add(record);
-                        }
+                        records.Add(record);
                     }
                 }
             }
