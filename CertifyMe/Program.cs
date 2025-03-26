@@ -19,7 +19,7 @@ builder.Services.AddTransient<ICourseCompletionRepository, CourseCompletionRepos
 
 builder.Services.AddHostedService<TaskQueueWorker>();
 builder.Services.AddHostedService<CertificateGenWorker>();
-//builder.Services.AddHostedService<CertificateSendWorker>();
+builder.Services.AddHostedService<CertificateSendWorker>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
