@@ -16,7 +16,7 @@ namespace CertifyMe.Models.Entities
             Surname = excelRow.Surname;
             Email = excelRow.Email;
             CourseName = excelRow.CourseName;
-            CompletionDate = (DateTime)excelRow.CompletionDate;
+            CompletionDate = excelRow.CompletionDate;
         }
 
         public int Id { get; set; }
